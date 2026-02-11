@@ -41,6 +41,7 @@ y = data['Status']
 # Numerical columns
 # Age,Grade,Tumor Size,Regional Node Examined,Reginol Node Positive,Survival Months
 
+numerical_cols = ['Age','Grade','Tumor Size','Regional Node Examined','Reginol Node Positive','Survival Months']
 nominal_cols = ['Race', 'Marital Status']
 ordinal_cols = [
     'T Stage',
@@ -66,24 +67,23 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 preprocessor = ColumnTransformer(
     transformers=[
-        # Ordinal encoding
-        ('ord',
-         OrdinalEncoder(
-             categories=ordinal_categories,
-             handle_unknown='use_encoded_value',
-             unknown_value=-1
-         ),
-         ordinal_cols),
+        # Ordinal → then scale
+        ('ord', Pipeline([
+            ('ord_enc', OrdinalEncoder(categories=ordinal_categories,
+                                       handle_unknown='use_encoded_value',
+                                       unknown_value=-1)),
+            ('scale', StandardScaler())
+        ]), ordinal_cols),
 
-        # One-hot encoding
-        ('nom',
-         OneHotEncoder(
-             drop='first',
-             handle_unknown='ignore'
-         ),
-         nominal_cols)
-    ],
-    remainder='passthrough'  # keeps numerical columns
+        # One-hot → then scale
+        ('nom', Pipeline([
+            ('onehot', OneHotEncoder(drop='first', handle_unknown='ignore')),
+            ('scale', StandardScaler(with_mean=False))  # with_mean=False for sparse data
+        ]), nominal_cols),
+
+        # Numerical → scale
+        ('num', StandardScaler(), numerical_cols)
+    ]
 )
 
 X_train_processed = preprocessor.fit_transform(X_train)
