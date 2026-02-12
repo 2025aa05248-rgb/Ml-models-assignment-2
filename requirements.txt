@@ -74,7 +74,7 @@ matplotlib-inline
 # requests-oauthlib==2.0.0
 # rich==14.3.2
 rsa
-scikit-learn
+scikit-learn==1.6.1
 scipy
 seaborn
 # six==1.17.0
