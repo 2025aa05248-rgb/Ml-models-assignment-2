@@ -1,10 +1,17 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import numpy as np
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix, roc_auc_score, matthews_corrcoef
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 st.title("Breast Cancer Survival Prediction")
 
-# Model selection
+# ==========================
+# 1️⃣ Model Selection
+# ==========================
+
 model_option = st.selectbox(
     "Select Model",
     ["Logistic Regression", 
@@ -15,7 +22,6 @@ model_option = st.selectbox(
      "XGBoost"]
 )
 
-# Load selected model
 model_files = {
     "Logistic Regression": "logistic.pkl",
     "Decision Tree": "decision_tree.pkl",
@@ -27,38 +33,69 @@ model_files = {
 
 model = pickle.load(open(model_files[model_option], "rb"))
 
-# Example inputs (you must match your dataset columns)
-age = st.number_input("Age", min_value=0)
-race = st.selectbox("Race", ["White","Black","Other"])
-marital_status = st.selectbox("Marital Status", ["Married","Single","Divorced","Widowed","Separated"])
-t_stage = st.selectbox("T Stage", ["T1","T2","T3","T4"])
-n_stage = st.selectbox("N Stage", ["N1","N2","N3"])
-grade = st.number_input("Grade",min_value = 0)
-tumor_size = st.number_input("Tumor Size", min_value=0)
-survival_months = st.number_input("Survival Months", min_value=0)
-estrogen = st.selectbox("Estrogen Status", ["Negative","Positive"])
-progesterone = st.selectbox("Progesterone Status", ["Negative","Positive"])
-regional_node_examined = st.number_input("Regional Node Examined", min_value=0)
-regional_node_positive = st.number_input("Reginol Node Positive", min_value=0)
+# ==========================
+# 2️⃣ Upload Test Dataset
+# ==========================
 
-if st.button("Predict"):
-    input_df = pd.DataFrame([[age,race, tumor_size,grade,marital_status,t_stage,
-                              n_stage, survival_months,estrogen,progesterone,
-                              regional_node_examined,regional_node_positive]],
-                            columns=["Age","Race","Tumor Size","Grade","Marital Status",
-                                     'T Stage','N Stage',"Survival Months",'Estrogen Status',
-                                     'Progesterone Status','Regional Node Examined','Reginol Node Positive'])
-    
-    prediction = model.predict(input_df)
-    prob = model.predict_proba(input_df)[0][1]
+uploaded_file = st.file_uploader("Upload Test CSV File", type=["csv"])
 
-    # st.write("Raw prediction:", prediction[0])
-    # st.write("Probability:", prob)
-    threshold = 0.3
+if uploaded_file is not None:
 
-    
-    if prediction[0] >= threshold:
-        st.success("Prediction: Alive")
+    test_data = pd.read_csv(uploaded_file,encoding="ISO-8859-1",on_bad_lines="skip")
+    test_data['Grade'] = test_data['Grade'].replace(' anaplastic; Grade IV', 4)
+
+    st.write("Uploaded Dataset Preview:")
+    st.write(test_data.head())
+
+    if "Status" not in test_data.columns:
+        st.error("CSV must contain 'Status' column for evaluation.")
     else:
-        st.error("Prediction: Dead")
+        X_test = test_data.drop("Status", axis=1)
+        y_test = test_data["Status"]
 
+        # Convert labels same as training
+        y_test = y_test.map({"Alive": 0, "Dead": 1})
+
+        # ==========================
+        # 3️⃣ Predictions
+        # ==========================
+
+        y_pred = model.predict(X_test)
+        y_prob = model.predict_proba(X_test)[:,1]
+
+        # ==========================
+        # 4️⃣ Evaluation Metrics
+        # ==========================
+
+        acc = accuracy_score(y_test, y_pred)
+        rec = recall_score(y_test, y_pred)
+        prec = precision_score(y_test, y_pred)
+        f1 = f1_score(y_test, y_pred)
+        auc = roc_auc_score(y_test, y_prob)
+        mcc = matthews_corrcoef(y_test, y_pred)
+
+        st.subheader("Evaluation Metrics")
+
+        st.write(f"Accuracy: {acc:.3f}")
+        st.write(f"Recall: {rec:.3f}")
+        st.write(f"Precision: {prec:.3f}")
+        st.write(f"F1 Score: {f1:.3f}")
+        st.write(f"AUC Score: {auc:.3f}")
+        st.write(f"MCC Score: {mcc:.3f}")
+
+        # ==========================
+        # 5️⃣ Confusion Matrix
+        # ==========================
+
+        st.subheader("Confusion Matrix")
+
+        cm = confusion_matrix(y_test, y_pred)
+
+        fig, ax = plt.subplots()
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                    xticklabels=["Alive", "Dead"],
+                    yticklabels=["Alive", "Dead"])
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+
+        st.pyplot(fig)
