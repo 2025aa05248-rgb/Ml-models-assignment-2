@@ -34,7 +34,7 @@ survival_months = st.number_input("Survival Months", min_value=0)
 grade = st.number_input("Grade",min_value = 0)
 
 if st.button("Predict"):
-    input_df = pd.DataFrame([[age, tumor_size, survival_months]],
+    input_df = pd.DataFrame([[age, tumor_size,grade, survival_months]],
                             columns=["Age", "Tumor Size","Grade", "Survival Months"])
     
     prediction = model.predict(input_df)
