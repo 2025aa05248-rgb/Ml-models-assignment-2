@@ -50,8 +50,14 @@ if st.button("Predict"):
                                      'Progesterone Status','Regional Node Examined','Reginol Node Positive'])
     
     prediction = model.predict(input_df)
+    prob = model.predict_proba(input_df)
+
+    st.write("Raw prediction:", prediction[0])
+    st.write("Probability:", prob)
+
     
-    if prediction[0] == 1:
+    if prediction[0] == 0:
         st.success("Prediction: Alive")
     else:
         st.error("Prediction: Dead")
+
