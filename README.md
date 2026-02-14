@@ -16,7 +16,7 @@ Status → Patient outcome
 Alive/Dead
 This is the binary class label the models aim to predict.
 Feature Categories
-------------------------------
+
 1.Demographic Features
 -------------------------------------
 Age – Age of the patient
