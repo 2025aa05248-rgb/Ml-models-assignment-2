@@ -58,55 +58,6 @@ c.Evaluation Metrics
 
 ## Model Performance Observations
 
-<!-- LogisticRegression model performance
-	
-1.Achieved the highest accuracy (0.8189) and best MCC (0.6346).<br>
-2.Highest F1-score (0.7928) indicates strong balance between precision and recall.<br>
-3.AUC = 0.875 shows excellent class separation.<br>
-4.Performs well because the dataset likely has linearly separable patterns.<br>
-5.Best overall performer<br>
-
-
-DecisionTree model performance
-	
-1.Moderate accuracy (0.7638) but low recall (0.6293).<br>
-2.High precision indicates it predicts positives carefully but misses many true positives.<br>
-3.Trees can overfit and may not generalize well.<br>
-4.Good interpretability but weaker generalization.<br>
-
-
-K-NN model performance
-	
-1.Lower accuracy (0.7323) and MCC (0.4583).<br>
-2.Performance affected by feature scaling sensitivity,<br>
-high dimensionality<br>
-3.Works better with simpler feature spaces.<br>
-4.Struggles with complex or high-dimension medical data.<br>
-
-
-NaiveBayes model performance
-	
-1.Similar performance to KNN.<br>
-2,Assumes feature independence, which is rare in medical datasets.<br>
-3.Lower recall indicates missed positive cases.<br>
-4.Useful baseline model but oversimplifies relationships<br>
-
-
-Random Forest (Ensemble) model performance
-
-1.Strong performance (Accuracy 0.799, MCC 0.599).<br>
-2.High precision (0.849) → fewer false positives.<br>
-3.Handles nonlinear relationships and feature interactions well.<br>
-4.Reliable and robust model.<br>
-
-
-XGBoost(Ensemble) model performance	
-
-1.Strong balanced performance.<br>
-2.Best recall among ensemble models (0.724) → detects more true positives.<br>
-3.Boosting improves difficult cases by focusing on misclassified samples.<br>
-4.Excellent trade-off between recall and precision.<br> -->
-
 | ML Model                      | Observation About Model Performance                                                                                                                                                                                                                                                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Logistic Regression**       | 1. Achieved the highest accuracy (0.8189) and best MCC (0.6346). <br> 2. Highest F1-score (0.7928) indicates strong balance between precision and recall. <br> 3. AUC = 0.875 shows excellent class separation. <br> 4. Performs well because the dataset likely has linearly separable patterns. <br> 5. **Best overall performer.** |
