@@ -23,24 +23,25 @@ Age – Age of the patient
 Race – Patient’s racial background
 Marital Status – Marital status of the patient
 
-2. Tumor Characteristics
+2.Tumor Characteristics
 -------------------------------------
 Grade – Severity/aggressiveness of the tumor
 Tumor Size – Size of the tumor
 T Stage – Size and extent of the primary tumor
 N Stage – Lymph node involvement stage
 
-3. Hormone Receptor Status
+3.Hormone Receptor Status
 -------------------------------------------
 Estrogen Status – Positive or Negative
 Progesterone Status – Positive or Negative
 
-4. Lymph Node Information
+4.Lymph Node Information
 ----------------------------------------
 Regional Node Examined – Number of lymph nodes examined
 Regional Node Positive – Number of lymph nodes affected
 
-5. Survival Information
+5.Survival Information
+-------------------------
 Survival Months – Duration of survival after diagnosis
 
 c.Evaluation Metrics
