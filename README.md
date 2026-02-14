@@ -108,9 +108,7 @@ XGBoost(Ensemble) model performance
 
 Recommended Model
 
-Primary choice: Logistic Regression
-Best alternative: XGBoost
-Most robust: Random Forest
+Primary choice: Logistic Regression<br>
+Best alternative: XGBoost<br>
+Most robust: Random Forest<br>
 
-
-                                                                          |
